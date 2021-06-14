@@ -1,5 +1,5 @@
 #!/bin/bash
-
+calc(){ awk "BEGIN { print $* }"; }
 
 IFS=$'\n' array=($(cat stopwords.txt))
 for i in $(seq ${#array[*]}); do
@@ -18,15 +18,21 @@ terminal=`tty`
 
 exec < a.txt
 
-count=0
 
 while read Inputs
 do
-    grep -o -i $SearchWord  "$Inputs"
+    a=`echo "$Inputs" | wc -w`
+    b=`echo "$Inputs" | grep -o -i $SearchWord | wc -l`
+    echo "$a"
+    echo "$b"
+    c=`calc $b/$a`
+    echo "$Inputs $c" >> Output.txt
 done
 
 
 
 exec < $terminal
+
+
 
 
